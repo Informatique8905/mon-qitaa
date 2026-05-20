@@ -2,15 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
 import User from '@/lib/models/User'
 import Candidat from '@/lib/models/Candidat'
-import { hashPassword, generateToken } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
     await connectDB()
-    
-    const { email, password, nom, prenom } = await req.json()
 
-    if (!email || !password || !nom || !prenom) {
+    const { nom, email, password, etablissement, matricule, categorie } = await req.json()
+
+    if (!nom || !email || !password || !etablissement || !matricule || !categorie) {
       return NextResponse.json(
         { error: 'Tous les champs sont obligatoires' },
         { status: 400 }
@@ -20,32 +19,38 @@ export async function POST(req: NextRequest) {
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Cet email est déjà utilisé' },
+        { error: 'Cet email est deja utilise' },
         { status: 400 }
       )
     }
 
-    const hashedPassword = await hashPassword(password)
-    
-    const user = await User.create({
+    const user = new User({
+      nom,
       email,
-      password: hashedPassword,
-      role: 'candidat'
+      password,
+      etablissement,
+      role: 'candidat',
+      isValidated: false,
     })
+    await user.save()
 
     await Candidat.create({
       userId: user._id,
       nom,
-      prenom,
+      etablissement,
+      matricule,
+      categorie,
     })
 
-    const token = generateToken({ userId: user._id.toString(), role: user.role })
-
-    return NextResponse.json({ token, role: user.role }, { status: 201 })
+    return NextResponse.json(
+      { message: 'Inscription reussie. En attente de validation.' },
+      { status: 201 }
+    )
 
   } catch (error) {
+    console.error('[REGISTER ERROR]', error)
     return NextResponse.json(
-      { error: 'Erreur serveur' },
+      { error: 'Erreur serveur interne' },
       { status: 500 }
     )
   }
