@@ -1,9 +1,39 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+
+
+
+:root {
+  --color-bg: #101214;
+  --color-surface: #161A1D;
+  --color-muted-surface: #1D2125;
+  --color-border: #2C333A;
+  --color-text-secondary: #596773;
+  --color-text-primary: #C7D1DB;
+  --color-heading: #DEE4EA;
+  --color-bg-2: #C7D1DB;
+  --color-text-primary-rgb: 199, 209, 219;
+}
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
+
+/* Dans theme.extend.keyframes */
+/*
+"border-beam": {
+  "100%": {
+    "offset-distance": "100%",
+  },
+},
+*/
+
+/* Dans theme.extend.animation */
+/*
+"border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+*/
 
 @theme inline {
   --color-background: var(--background);

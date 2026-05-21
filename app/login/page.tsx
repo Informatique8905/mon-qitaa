@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
+import LoginEffects from '@/components/ui/login-effects'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -138,8 +139,38 @@ export default function LoginPage() {
         .register-link a { color: #f97316; font-weight: 700; text-decoration: none; }
         .register-link a:hover { color: #ea6c0a; text-decoration: underline; }
         .side-panel { width: 46%; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 50px; overflow: hidden; flex-shrink: 0; }
-        .side-bg { position: absolute; inset: 0; background-image: url('/PHOTO.jpg'); background-size: cover; background-position: center; z-index: 0; }
-        .side-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(10,4,0,0.88) 0%, rgba(30,10,0,0.80) 40%, rgba(100,40,0,0.70) 75%, rgba(180,80,0,0.60) 100%); z-index: 1; }
+.side-bg {
+  position: absolute;
+  inset: 0;
+
+  /* IMAGE */
+  background-image:
+    linear-gradient(
+      160deg,
+      rgba(10,4,0,0.88) 0%,
+      rgba(30,10,0,0.80) 40%,
+      rgba(100,40,0,0.70) 75%,
+      rgba(180,80,0,0.60) 100%
+    ),
+    url('/PHOTO.jpeg');
+
+  /* ADAPTATION */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  /* EFFET PREMIUM */
+  transform: scale(1.03);
+  transition: transform 6s ease;
+
+  z-index: 0;
+}
+
+/* Animation élégante */
+.side-panel:hover .side-bg {
+  transform: scale(1.08);
+}
+          .side-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(10,4,0,0.88) 0%, rgba(30,10,0,0.80) 40%, rgba(100,40,0,0.70) 75%, rgba(180,80,0,0.60) 100%); z-index: 1; }
         .side-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(249,115,22,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.06) 1px, transparent 1px); background-size: 48px 48px; z-index: 2; }
         .side-content { position: relative; z-index: 3; text-align: center; }
         .side-title { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.3px; }
@@ -244,7 +275,6 @@ export default function LoginPage() {
 
         <div className="side-panel">
           <div className="side-bg" />
-          <div className="side-overlay" />
           <div className="side-grid" />
           <div className="side-content">
             <h2 className="side-title">

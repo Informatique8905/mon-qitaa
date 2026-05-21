@@ -84,7 +84,6 @@ export default function RegisterPage() {
     playSound(480)
     setLoading(true)
     setError('')
-
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -92,7 +91,6 @@ export default function RegisterPage() {
     })
     const data = await res.json()
     setLoading(false)
-
     if (!res.ok) {
       setError(data.error || "Erreur lors de l'inscription")
       playSound(220)
@@ -147,16 +145,44 @@ export default function RegisterPage() {
           justify-content: center; align-items: center;
           padding: 60px 50px; overflow: hidden; flex-shrink: 0;
         }
+
+        /* ── MODIFICATION 1 : intensité du noir réduite ── */
         .side-bg {
-          position: absolute; inset: 0;
-          background-image: url('/PHOTO.jpg');
-          background-size: cover; background-position: center; z-index: 0;
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(
+              160deg,
+              rgba(10,4,0,0.35) 0%,
+              rgba(30,10,0,0.28) 40%,
+              rgba(100,40,0,0.22) 75%,
+              rgba(180,80,0,0.18) 100%
+            ),
+            url('/PHOTO.jpeg');
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          transform: scale(1.03);
+          transition: transform 6s ease;
+          z-index: 0;
         }
+        .side-panel:hover .side-bg {
+          transform: scale(1.08);
+        }
+
+        /* overlay également allégé */
         .side-overlay {
           position: absolute; inset: 0;
-          background: linear-gradient(160deg,rgba(10,4,0,0.88) 0%,rgba(30,10,0,0.80) 40%,rgba(100,40,0,0.70) 75%,rgba(180,80,0,0.60) 100%);
+          background: linear-gradient(
+            160deg,
+            rgba(10,4,0,0.40) 0%,
+            rgba(30,10,0,0.32) 40%,
+            rgba(100,40,0,0.22) 75%,
+            rgba(180,80,0,0.18) 100%
+          );
           z-index: 1;
         }
+
         .side-grid {
           position: absolute; inset: 0;
           background-image: linear-gradient(rgba(249,115,22,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,0.06) 1px,transparent 1px);
@@ -169,14 +195,21 @@ export default function RegisterPage() {
           top: -80px; left: -80px; z-index: 2;
         }
         .side-content { position: relative; z-index: 3; text-align: center; }
-        .side-logo-wrap { margin: 0 auto 28px; animation: float 5s ease-in-out infinite; }
+
+        /* ── MODIFICATION 2 : logo droite 4× plus grand ── */
+        .side-logo-wrap {
+          margin: 0 auto 28px;
+          animation: float 5s ease-in-out infinite;
+          width: 160px; height: 160px; position: relative;
+        }
+
         .side-title {
           font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 700;
           color: #fff; line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.3px;
         }
         .side-title span { color: #f97316; }
         .side-desc {
-          font-size: 13.5px; color: rgba(255,255,255,0.55);
+          font-size: 13.5px; color: rgba(255,255,255,0.75);
           line-height: 1.75; max-width: 270px; margin: 0 auto 36px;
         }
         .features-list { text-align: left; }
@@ -193,8 +226,9 @@ export default function RegisterPage() {
           display: flex; align-items: center; justify-content: center;
           font-size: 17px; flex-shrink: 0; margin-top: 2px;
         }
-        .feature-text { font-size: 13px; color: rgba(255,255,255,0.68); line-height: 1.5; }
+        .feature-text { font-size: 13px; color: rgba(255,255,255,0.82); line-height: 1.5; }
         .feature-text strong { color: #fff; font-weight: 600; display: block; margin-bottom: 2px; }
+
         @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
         @keyframes shake {
           0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); }
@@ -202,6 +236,7 @@ export default function RegisterPage() {
         }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
         .form-eyebrow {
           font-size: 11px; font-weight: 600; letter-spacing: 2px;
           text-transform: uppercase; color: #f97316; margin-bottom: 10px;
@@ -295,18 +330,28 @@ export default function RegisterPage() {
         {/* ── GAUCHE : Formulaire ── */}
         <div className="form-panel">
           <div className="form-card">
-            <div style={{ marginBottom: '24px' }}>
+
+            {/* ── MODIFICATION 2 : logo 192px AU-DESSUS du eyebrow ── */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '18px' }}>
+              <div style={{ width: '192px', height: '192px', position: 'relative', marginBottom: '16px' }}>
+                <Image
+                  src="/logo.png"
+                  alt="Logo QITAA"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                />
+              </div>
               <div className="form-eyebrow">Inscription au concours</div>
-              <h1 className="form-title">
-                Prêt à défendre les couleurs<br />de ton établissement ? 🏆
-              </h1>
-              <p className="form-subtitle">
-                Inscris-toi dès maintenant pour participer au plus grand rendez-vous
-                intellectuel et culturel des étudiants de Côte d'Ivoire.
-              </p>
             </div>
 
-            {/* Barre de progression 4 étapes */}
+            <h1 className="form-title">
+              Prêt à défendre les couleurs<br />de ton établissement ? 🏆
+            </h1>
+            <p className="form-subtitle">
+              Inscris-toi dès maintenant pour participer au plus grand rendez-vous
+              intellectuel et culturel des étudiants de Côte d'Ivoire.
+            </p>
+
             <div className="steps-bar">
               {[0,1,2,3].map(i => {
                 const vals = [form.nom, form.email, form.password, form.etablissement]
@@ -413,10 +458,16 @@ export default function RegisterPage() {
           <div className="side-overlay" />
           <div className="side-grid" />
           <div className="side-content">
+
             <div className="side-logo-wrap">
-              <Image src="/logo.png" alt="QITAA" width={180} height={180}
-                style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }} priority />
+              <Image
+                src="/logo.png"
+                alt="Logo QITAA"
+                fill
+                style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+              />
             </div>
+
             <h2 className="side-title">
               Quand l'intelligence et la tradition<br />
               <span>réconcilient la jeunesse.</span>
